@@ -6,6 +6,7 @@ import com.example.demo.api.coupon.app.CouponCreateRequest;
 import com.example.demo.api.coupon.app.CouponCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,7 +15,7 @@ public class CouponCreateApi {
     private final CouponCreateService couponCreateService;
 
     @PostMapping("/api/v1/coupons")
-    public ApiResponse<Void> createCoupon(CouponCreateRequest req) {
+    public ApiResponse<Void> createCoupon(@RequestBody CouponCreateRequest req) {
         try {
             couponCreateService.createCoupon(req);
         } catch (ValidationException e) {
