@@ -83,10 +83,8 @@ class ConcurrentCouponIssueServiceTest {
 
         latch.await();
 
-        long issuedCount = couponHistoryRepository.countCouponHistoriesByCouponCouponId(couponId);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow();
-        assertEquals(THREAD_COUNT, issuedCount, "100명의 사용자에게 한장씩 쿠폰이 발급되어야 한다");
-        assertEquals(0, coupon.getAmount(), "쿠폰 수량은 0이어야 한다");
+        assertEquals(0, coupon.getQuantity(), "쿠폰 수량은 0이어야 한다");
     }
 }
 

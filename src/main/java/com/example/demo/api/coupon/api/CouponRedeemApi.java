@@ -6,6 +6,7 @@ import com.example.demo.api.common.app.ValidationException;
 import com.example.demo.api.coupon.app.CouponCreateRequest;
 import com.example.demo.api.coupon.app.CouponRedeemRequest;
 import com.example.demo.api.coupon.app.CouponRedeemService;
+import com.example.demo.api.coupon.domain.CouponUnavailableException;
 import com.example.demo.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +19,10 @@ public class CouponRedeemApi {
     private final CouponRedeemService couponRedeemService;
 
     @PostMapping("/api/v1/coupons/{couponId}/redeem")
-    public ApiResponse<Void> redeemCoupon(@PathVariable Integer couponId, User user) {
+    public ApiResponse<Void> redeemCoupon(@PathVariable Integer couponId) {
         try {
-            couponRedeemService.redeemCoupon(new CouponRedeemRequest(user.getId(), couponId));
-        } catch (NoDataException e) {
+            couponRedeemService.redeemCoupon(new CouponRedeemRequest(1, couponId));
+        } catch (NoDataException | CouponUnavailableException e) {
             return ApiResponse.badRequest(e.getMessage());
         }
 

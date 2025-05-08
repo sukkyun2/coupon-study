@@ -28,6 +28,7 @@ public class Coupon {
     private Integer quantity;
 
     @Column(name = "COUPON_TYPE")
+    @Enumerated(EnumType.STRING)
     private CouponType couponType;
 
     @Column(name = "EXPIRED_AT")
