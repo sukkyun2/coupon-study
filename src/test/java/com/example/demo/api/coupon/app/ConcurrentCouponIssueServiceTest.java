@@ -64,7 +64,7 @@ class ConcurrentCouponIssueServiceTest {
     }
 
     @Test
-    @DisplayName("100명의 사용자에게 한장씩 쿠폰이 발급되어야 한다")
+    @DisplayName("10000명의 사용자에게 한장씩 쿠폰이 발급되어야 한다")
     void preventDuplicateAndOverIssueInConcurrency() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
         CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
@@ -73,7 +73,7 @@ class ConcurrentCouponIssueServiceTest {
             final int userId = i;
             executorService.submit(() -> {
                 try {
-                    couponIssueService.issueCoupon(new CouponIssueRequest(userId, couponId));
+                    couponIssueService.issueCouponSync(new CouponIssueRequest(userId, couponId));
                 } catch (Exception ignored) {
                 } finally {
                     latch.countDown();

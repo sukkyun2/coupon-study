@@ -15,8 +15,13 @@ public class CouponIssueService {
     private final CouponHistoryRepository couponHistoryRepository;
     private final UserQueryService userQueryService;
 
+
+    public synchronized void issueCouponSync(CouponIssueRequest req){
+        issueCoupon(req);
+    }
+
     @Transactional
-    public synchronized void issueCoupon(CouponIssueRequest req) {
+    public void issueCoupon(CouponIssueRequest req) {
         Coupon coupon = couponRepository.findById(req.couponId()).orElseThrow(NoDataException::new);
         User user = userQueryService.getUser(req.userId());
 
@@ -36,7 +41,7 @@ public class CouponIssueService {
         return couponHistoryRepository.existsById(couponHistoryId);
     }
 
-    private void appendHistory(User user, Coupon coupon){
+    private void appendHistory(User user, Coupon coupon) {
         CouponHistoryId couponHistoryId = new CouponHistoryId(user.getId(), coupon.getCouponId());
 
         CouponHistory history = new CouponHistory(couponHistoryId, user, coupon);
