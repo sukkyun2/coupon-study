@@ -16,7 +16,7 @@ public class CouponIssueService {
     private final UserQueryService userQueryService;
 
     @Transactional
-    public void issueCoupon(CouponIssueRequest req) {
+    public synchronized void issueCoupon(CouponIssueRequest req) {
         Coupon coupon = couponRepository.findById(req.couponId()).orElseThrow(NoDataException::new);
         User user = userQueryService.getUser(req.userId());
 

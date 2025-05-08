@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 class ConcurrentCouponIssueServiceTest {
 
-    private static final int THREAD_COUNT = 100;
-    private static final int COUPON_AMOUNT = 100;
+    private static final int THREAD_COUNT = 10000;
+    private static final int COUPON_AMOUNT = 10000;
 
     @Autowired
     private CouponIssueService couponIssueService;
