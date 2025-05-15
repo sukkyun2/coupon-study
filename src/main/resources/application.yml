@@ -8,3 +8,6 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
+logging:
+  level:
+    net.ttddyy.dsproxy.listener: DEBUG
