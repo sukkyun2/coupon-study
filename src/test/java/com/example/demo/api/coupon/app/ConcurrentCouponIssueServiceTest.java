@@ -29,9 +29,6 @@ class ConcurrentCouponIssueServiceTest {
     private static final int COUPON_AMOUNT = 10000;
 
     @Autowired
-    private CouponIssueService couponIssueService;
-
-    @Autowired
     private CouponRepository couponRepository;
 
     @Autowired
@@ -39,6 +36,9 @@ class ConcurrentCouponIssueServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CouponIssueWrapper couponIssueWrapper;
 
     private int couponId;
 
@@ -73,7 +73,7 @@ class ConcurrentCouponIssueServiceTest {
             final int userId = i;
             executorService.submit(() -> {
                 try {
-                    couponIssueService.issueCouponSync(new CouponIssueRequest(userId, couponId));
+                    couponIssueWrapper.issueCouponWithLock(new CouponIssueRequest(userId, couponId));
                 } catch (Exception ignored) {
                 } finally {
                     latch.countDown();

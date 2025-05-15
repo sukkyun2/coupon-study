@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+
 @Service
 @RequiredArgsConstructor
 public class CouponIssueService {
@@ -15,12 +18,7 @@ public class CouponIssueService {
     private final CouponHistoryRepository couponHistoryRepository;
     private final UserQueryService userQueryService;
 
-
-    public synchronized void issueCouponSync(CouponIssueRequest req){
-        issueCoupon(req);
-    }
-
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void issueCoupon(CouponIssueRequest req) {
         Coupon coupon = couponRepository.findById(req.couponId()).orElseThrow(NoDataException::new);
         User user = userQueryService.getUser(req.userId());
