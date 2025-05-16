@@ -43,7 +43,7 @@ class CouponIssueServiceTest {
         Integer userId = 10;
         CouponIssueRequest request = new CouponIssueRequest(userId, couponId);
 
-        Coupon coupon = new Coupon(couponId, "쿠폰명", 100, 100, CouponType.CHICKEN, LocalDateTime.now().plusHours(1), LocalDateTime.now());
+        Coupon coupon = new Coupon(couponId, "쿠폰명", 100, 100, CouponType.CHICKEN, LocalDateTime.now().plusHours(1), LocalDateTime.now(),0);
         User user = new User(userId, "유저명");
 
         when(couponRepository.findById(couponId)).thenReturn(Optional.of(coupon));
@@ -80,7 +80,7 @@ class CouponIssueServiceTest {
         Integer userId = 10;
         CouponIssueRequest request = new CouponIssueRequest(userId, couponId);
 
-        Coupon coupon = new Coupon(couponId, "쿠폰명", 100, 100, CouponType.CHICKEN, LocalDateTime.now().plusHours(1), LocalDateTime.now());
+        Coupon coupon = new Coupon(couponId, "쿠폰명", 100, 100, CouponType.CHICKEN, LocalDateTime.now().plusHours(1), LocalDateTime.now(),0);
         User user = new User(userId, "유저명");
 
         when(couponRepository.findById(couponId)).thenReturn(Optional.of(coupon));

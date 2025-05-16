@@ -4,8 +4,13 @@ import com.example.demo.api.common.app.NoDataException;
 import com.example.demo.api.coupon.domain.*;
 import com.example.demo.api.user.domain.User;
 import com.example.demo.api.user.domain.UserQueryService;
+import com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DeadlockLoserDataAccessException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +22,7 @@ public class CouponIssueService {
 
     @Transactional
     public void issueCoupon(CouponIssueRequest req) {
-        Coupon coupon = couponRepository.findByIdForUpdate(req.couponId()).orElseThrow(NoDataException::new);
+        Coupon coupon = couponRepository.findById(req.couponId()).orElseThrow(NoDataException::new);
         User user = userQueryService.getUser(req.userId());
 
         if (hasIssuedCoupon(user, coupon)) {

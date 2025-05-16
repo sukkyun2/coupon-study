@@ -65,7 +65,7 @@ class CouponRedeemServiceTest {
     private CouponHistory createHistory() {
         User user = new User(1, "테스트 유저");
         Coupon coupon = new Coupon(100, "테스트 쿠폰", 100, 100,
-                CouponType.CHICKEN, LocalDateTime.now().plusDays(1), LocalDateTime.now());
+                CouponType.CHICKEN, LocalDateTime.now().plusDays(1), LocalDateTime.now(),0);
         return new CouponHistory(new CouponHistoryId(coupon.getCouponId(), user.getId()), user, coupon);
     }
 }

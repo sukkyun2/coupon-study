@@ -37,6 +37,9 @@ public class Coupon {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
+    @Version
+    private long version;
+
     @Builder
     public Coupon(String couponName, Integer amount, CouponType couponType, LocalDateTime expiredAt) {
         this.couponName = couponName;
@@ -45,6 +48,7 @@ public class Coupon {
         this.couponType = couponType;
         this.expiredAt = expiredAt;
         this.createdAt = LocalDateTime.now();
+        this.version = 0;
     }
 
     public boolean isQuantityAvailable(){
