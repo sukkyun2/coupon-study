@@ -15,13 +15,11 @@ public class CouponCreateApi {
     private final CouponCreateService couponCreateService;
 
     @PostMapping("/api/v1/coupons")
-    public ApiResponse<Void> createCoupon(@RequestBody CouponCreateRequest req) {
+    public ApiResponse<?> createCoupon(@RequestBody CouponCreateRequest req) {
         try {
-            couponCreateService.createCoupon(req);
+            return ApiResponse.ok(couponCreateService.createCoupon(req));
         } catch (ValidationException e) {
             return ApiResponse.badRequest(e.getMessage());
         }
-
-        return ApiResponse.ok();
     }
 }

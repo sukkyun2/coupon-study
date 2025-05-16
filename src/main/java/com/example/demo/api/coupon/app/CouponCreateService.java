@@ -17,7 +17,7 @@ public class CouponCreateService {
         this.couponRepository = couponRepository;
     }
 
-    public void createCoupon(CouponCreateRequest req) {
+    public Integer createCoupon(CouponCreateRequest req) {
         List<String> errors = validator.validate(req);
         if (!errors.isEmpty()) {
             throw new ValidationException(errors.get(0));
@@ -26,6 +26,8 @@ public class CouponCreateService {
         Coupon coupon = convert(req);
 
         couponRepository.save(coupon);
+
+        return coupon.getCouponId();
     }
 
     private Coupon convert(CouponCreateRequest req) {

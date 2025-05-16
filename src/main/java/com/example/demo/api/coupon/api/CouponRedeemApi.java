@@ -21,7 +21,7 @@ public class CouponRedeemApi {
     @PostMapping("/api/v1/coupons/{couponId}/redeem")
     public ApiResponse<Void> redeemCoupon(@PathVariable Integer couponId) {
         try {
-            couponRedeemService.redeemCoupon(new CouponRedeemRequest(1, couponId));
+            couponRedeemService.redeemCoupon(new CouponRedeemRequest(null, couponId));
         } catch (NoDataException | CouponUnavailableException e) {
             return ApiResponse.badRequest(e.getMessage());
         }

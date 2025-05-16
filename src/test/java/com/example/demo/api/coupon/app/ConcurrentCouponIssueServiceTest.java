@@ -59,6 +59,7 @@ class ConcurrentCouponIssueServiceTest {
         userRepository.deleteAll();
     }
 
+
     private User createUser(int id) {
         return new User(id, "이름" + id);
     }
@@ -73,8 +74,7 @@ class ConcurrentCouponIssueServiceTest {
             final int userId = i;
             executorService.submit(() -> {
                 try {
-                    couponIssueService.issueCouponSync(new CouponIssueRequest(userId, couponId));
-                } catch (Exception ignored) {
+                    couponIssueService.issueCoupon(new CouponIssueRequest(userId, couponId));
                 } finally {
                     latch.countDown();
                 }
