@@ -5,6 +5,7 @@ import com.example.demo.api.common.app.NoDataException;
 import com.example.demo.api.coupon.app.CouponAlreadyExistException;
 import com.example.demo.api.coupon.app.CouponIssueRequest;
 import com.example.demo.api.coupon.app.CouponIssueService;
+import com.example.demo.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +15,9 @@ public class CouponIssueApi {
     private final CouponIssueService couponIssueService;
 
     @PostMapping("/api/v1/coupons/{couponId}/issue")
-    public ApiResponse<Void> issueCoupon(@PathVariable Integer couponId, @RequestParam Integer userId) {
+    public ApiResponse<Void> issueCoupon(@PathVariable Integer couponId, User user) {
         try {
-            couponIssueService.issueCoupon(new CouponIssueRequest(userId, couponId));
+            couponIssueService.issueCoupon(new CouponIssueRequest(user.getId(), couponId));
         } catch (NoDataException | CouponAlreadyExistException e) {
             return ApiResponse.badRequest(e.getMessage());
         }

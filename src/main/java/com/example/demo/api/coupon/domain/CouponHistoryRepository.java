@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CouponHistoryRepository extends JpaRepository<CouponHistory,CouponHistoryId> {
-    long countCouponHistoriesByCouponCouponId(Integer couponId);
 }

@@ -17,7 +17,7 @@ public class CouponIssueService {
     private final UserQueryService userQueryService;
 
     @Transactional
-    @DistributedLock //FIXME key값 메서드명 + couponId로 변경
+    @DistributedLock(key = "d", waitTime = 2) //FIXME key값 메서드명 + couponId로 변경
     public void issueCoupon(CouponIssueRequest req) {
         Coupon coupon = couponRepository.findById(req.couponId()).orElseThrow(NoDataException::new);
         User user = userQueryService.getUser(req.userId());
