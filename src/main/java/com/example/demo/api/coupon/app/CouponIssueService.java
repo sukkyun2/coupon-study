@@ -1,6 +1,7 @@
 package com.example.demo.api.coupon.app;
 
 import com.example.demo.api.common.app.NoDataException;
+import com.example.demo.api.common.infra.DistributedLock;
 import com.example.demo.api.coupon.domain.*;
 import com.example.demo.api.user.domain.User;
 import com.example.demo.api.user.domain.UserQueryService;
@@ -16,8 +17,9 @@ public class CouponIssueService {
     private final UserQueryService userQueryService;
 
     @Transactional
+    @DistributedLock //FIXME key값 메서드명 + couponId로 변경
     public void issueCoupon(CouponIssueRequest req) {
-        Coupon coupon = couponRepository.findByIdForUpdate(req.couponId()).orElseThrow(NoDataException::new);
+        Coupon coupon = couponRepository.findById(req.couponId()).orElseThrow(NoDataException::new);
         User user = userQueryService.getUser(req.userId());
 
         if (hasIssuedCoupon(user, coupon)) {
