@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/coupon?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    url: ${SPRING_DATASOURCE_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 1234
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     hikari:
-      maximum-pool-size: 40
+      maximum-pool-size: ${SPRING_DATASOURCE_MAXIMUM_POOL_SIZE:40}
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
