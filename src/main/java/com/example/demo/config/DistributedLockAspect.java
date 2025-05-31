@@ -23,7 +23,7 @@ public class DistributedLockAspect {
     private final AopForTransaction aopForTransaction;
 
     @Around("@annotation(com.example.demo.api.common.infra.DistributedLock)")
-    public Object around(ProceedingJoinPoint joinPoint) {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         DistributedLock lockAnnotation = method.getAnnotation(DistributedLock.class);
@@ -31,13 +31,16 @@ public class DistributedLockAspect {
         String key = NAMED_LOCK_PREFIX + method.getName() +
                 ":" + CustomSpringELParser.getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), lockAnnotation.key());
 
-        return lockManager.executeWithLock(key, lockAnnotation.waitTime(), () -> {
-            try {
-                return aopForTransaction.proceed(joinPoint);
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-        });
+        boolean lockAcquired = lockManager.tryLock(key, lockAnnotation.waitTime());
+        if (!lockAcquired) {
+            throw new IllegalStateException("Could not acquire named lock: " + key);
+        }
+
+        try {
+            return aopForTransaction.proceed(joinPoint);
+        } finally {
+            lockManager.releaseLock(key);
+        }
     }
 }
 
