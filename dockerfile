@@ -1,10 +1,18 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jdk-alpine as build
+WORKDIR /workspace/app
 
-WORKDIR /app
+COPY . .
 
-COPY target/*.jar app.jar
+RUN chmod 777 ./mvnw
+RUN ./mvnw clean package -DskipTests
+RUN java -Djarmode=layertools -jar target/coupon-0.0.1.jar extract --destination target/extracted
+RUN mkdir -p target/extracted && (cd target/extracted; jar -xf ../coupon-0.0.1.jar)
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
-EXPOSE 8080
-
+FROM eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+ARG EXTRACTED=/workspace/app/target/extracted
+COPY --from=build ${EXTRACTED}/dependencies/ ./
+COPY --from=build ${EXTRACTED}/spring-boot-loader/ ./
+COPY --from=build ${EXTRACTED}/snapshot-dependencies/ ./
+COPY --from=build ${EXTRACTED}/application/ ./
+ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher"]
