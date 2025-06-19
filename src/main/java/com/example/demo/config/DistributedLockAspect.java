@@ -33,6 +33,7 @@ public class DistributedLockAspect {
 
         boolean lockAcquired = lockManager.tryLock(key, lockAnnotation.waitTime());
         if (!lockAcquired) {
+            log.error("Could not acquire named lock: {}", key);
             throw new IllegalStateException("Could not acquire named lock: " + key);
         }
 
