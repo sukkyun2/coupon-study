@@ -5,11 +5,6 @@ spring:
     username: root
     password: 11111111
     hikari:
-      maximum-pool-size: ${SPRING_DATASOURCE_MAXIMUM_POOL_SIZE:100}
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: update
-logging:
-  level:
-    net.ttddyy.dsproxy.listener: DEBUG
+      maximum-pool-size: ${SPRING_DATASOURCE_MAXIMUM_POOL_SIZE:40}
+
+
